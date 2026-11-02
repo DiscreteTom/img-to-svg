@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "svg-to-png | 位图转矢量",
+    "description": "使用 VTracer WebAssembly 在浏览器中将 PNG、JPG 和 WebP 图片转换为清晰、可缩放的 SVG。"
+  },
+  "app": {
+    "homeLabel": "svg-to-png 首页"
+  },
+  "language": {
+    "label": "语言",
+    "english": "EN",
+    "chinese": "中文",
+    "switchToEnglish": "Switch to English",
+    "switchToChinese": "切换到中文"
+  },
+  "topbar": {
+    "localProcessing": "本地处理"
+  },
+  "converter": {
+    "section": "01 / 转换",
+    "heading": "开始矢量化",
+    "engine": "visioncortex VTracer",
+    "fileInput": "选择图片",
+    "dropTitle": "将图片拖到这里",
+    "dropDescription": "支持 PNG、JPG、WebP，最大 25 MB",
+    "chooseImage": "选择图片",
+    "trySample": "试用示例图",
+    "replaceImage": "更换图片",
+    "sourceImageAlt": "原图 {{name}}",
+    "selectedImageAlt": "已选择的图片 {{name}}",
+    "svgPreviewAlt": "生成的 SVG 预览",
+    "svgAlt": "生成的 SVG",
+    "emptyHint": "在右侧选择风格，然后开始转换",
+    "dirtyHint": "设置已修改，重新转换后会更新预览和文件。",
+    "localMemory": "图片仅保留在本地内存",
+    "clearWorkspace": "清空工作区",
+    "copySvg": "复制 SVG",
+    "copied": "已复制",
+    "downloadSvg": "下载 SVG"
+  },
+  "stats": {
+    "svgSize": "SVG 大小",
+    "vectorPaths": "矢量路径",
+    "scalable": "可缩放"
+  },
+  "preview": {
+    "mode": "预览模式",
+    "source": "原图",
+    "compare": "对比",
+    "svg": "SVG",
+    "compareRange": "拖动对比原图和 SVG"
+  },
+  "progress": {
+    "segment": "正在识别颜色区域",
+    "compose": "正在绘制矢量轮廓",
+    "optimize": "正在优化 SVG 路径"
+  },
+  "notices": {
+    "svgGenerated": "SVG 已生成",
+    "conversionStopped": "已停止转换",
+    "svgCopied": "SVG 代码已复制",
+    "downloadStarted": "SVG 已开始下载"
+  },
+  "errors": {
+    "unsupportedFile": "请选择 PNG、JPG 或 WebP 图片。",
+    "fileTooLarge": "图片超过 25 MB，请先压缩后再试。",
+    "imageLoad": "无法加载这张图片。",
+    "imageRead": "无法读取这张图片。",
+    "sampleLoad": "无法加载示例图片。",
+    "sampleCreate": "当前浏览器无法创建示例图片。",
+    "sampleGenerate": "示例图片生成失败。",
+    "conversionFailed": "转换失败：{{message}}",
+    "conversionRetry": "转换失败，请重试。",
+    "copyFailed": "复制失败，请重试。",
+    "clipboardUnavailable": "当前浏览器无法访问剪贴板。",
+    "vectorizerReloaded": "转换器已重新加载。"
+  },
+  "settings": {
+    "aria": "转换设置",
+    "title": "矢量风格",
+    "presetsAria": "预设风格",
+    "geometry": "几何模式",
+    "geometryHint": "控制 SVG 的轮廓质感",
+    "geometryMode": "几何模式",
+    "geometryOptions": {
+      "pixel": "像素",
+      "polygon": "折线",
+      "spline": "曲线"
+    },
+    "colorCount": "颜色数量",
+    "speckleFilter": "噪点过滤",
+    "advanced": "高级参数",
+    "cornerThreshold": "角点阈值",
+    "curveSimplify": "曲线简化",
+    "maxDimension": "最大尺寸",
+    "dimensions": {
+      "fast": "800 px · 快速",
+      "balanced": "1200 px · 均衡",
+      "detailed": "1600 px · 精细",
+      "maximum": "2200 px · 最大"
+    },
+    "optimization": "SVG 优化",
+    "optimizationOptions": {
+      "off": "关闭",
+      "standard": "标准",
+      "maximum": "极致压缩"
+    },
+    "adaptiveThreshold": "自适应阈值",
+    "adaptiveThresholdHint": "适合光照不均匀的扫描线稿",
+    "applySettings": "应用新设置",
+    "convertAgain": "重新转换",
+    "convert": "转换为 SVG",
+    "stop": "停止",
+    "privacy": "图片只存在于当前标签页，不会上传。"
+  },
+  "presets": {
+    "artwork": {
+      "label": "插画与图标",
+      "description": "色块清晰，曲线顺滑"
+    },
+    "photo": {
+      "label": "摄影与渐变",
+      "description": "保留更多色彩细节"
+    },
+    "lines": {
+      "label": "线稿与 Logo",
+      "description": "高对比、干净边缘"
+    }
+  }
+}

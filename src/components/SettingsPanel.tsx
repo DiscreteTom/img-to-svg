@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   PRESETS,
   type PresetId,
@@ -47,6 +48,7 @@ export function SettingsPanel({
   onCancel,
 }: SettingsPanelProps) {
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  const { t } = useTranslation();
 
   function update<K extends keyof TraceSettings>(
     key: K,
@@ -64,16 +66,20 @@ export function SettingsPanel({
   )?.id;
 
   return (
-    <aside className="settings-panel" aria-label="Conversion settings">
+    <aside className="settings-panel" aria-label={t("settings.aria")}>
       <div className="settings-heading">
         <div>
           <span className="step-kicker">02</span>
-          <h2>Vector style</h2>
+          <h2>{t("settings.title")}</h2>
         </div>
         <SlidersHorizontal size={18} aria-hidden="true" />
       </div>
 
-      <div className="preset-list" role="radiogroup" aria-label="Style presets">
+      <div
+        className="preset-list"
+        role="radiogroup"
+        aria-label={t("settings.presetsAria")}
+      >
         {PRESETS.map((preset) => {
           const Icon = PRESET_ICONS[preset.id as PresetId];
           const selected = activePreset === preset.id;
@@ -90,8 +96,8 @@ export function SettingsPanel({
                 <Icon size={19} strokeWidth={1.8} aria-hidden="true" />
               </span>
               <span className="preset-copy">
-                <strong>{preset.label}</strong>
-                <small>{preset.description}</small>
+                <strong>{t(`presets.${preset.id}.label`)}</strong>
+                <small>{t(`presets.${preset.id}.description`)}</small>
               </span>
               <span className="preset-check" aria-hidden="true" />
             </button>
@@ -102,32 +108,29 @@ export function SettingsPanel({
       <div className="settings-divider" />
 
       <div className="field-heading">
-        <span>Geometry</span>
-        <span className="field-hint">Controls the outline treatment</span>
+        <span>{t("settings.geometry")}</span>
+        <span className="field-hint">{t("settings.geometryHint")}</span>
       </div>
-      <div className="segmented-control" aria-label="Geometry mode">
-        {[
-          ["pixel", "Pixel"],
-          ["polygon", "Polygon"],
-          ["spline", "Spline"],
-        ].map(([value, label]) => (
+      <div
+        className="segmented-control"
+        aria-label={t("settings.geometryMode")}
+      >
+        {(["pixel", "polygon", "spline"] as const).map((value) => (
           <button
             className={settings.mode === value ? "is-active" : ""}
             key={value}
             type="button"
             aria-pressed={settings.mode === value}
-            onClick={() =>
-              update("mode", value as TraceSettings["mode"])
-            }
+            onClick={() => update("mode", value)}
           >
-            {label}
+            {t(`settings.geometryOptions.${value}`)}
           </button>
         ))}
       </div>
 
       <div className="quick-controls">
         <RangeField
-          label="Color count"
+          label={t("settings.colorCount")}
           value={settings.maxColors}
           min={2}
           max={32}
@@ -137,7 +140,7 @@ export function SettingsPanel({
           onChange={(value) => update("maxColors", value)}
         />
         <RangeField
-          label="Speckle filter"
+          label={t("settings.speckleFilter")}
           value={settings.filterSpeckle}
           min={0}
           max={16}
@@ -153,14 +156,14 @@ export function SettingsPanel({
         aria-expanded={advancedOpen}
         onClick={() => setAdvancedOpen((open) => !open)}
       >
-        <span>Advanced controls</span>
+        <span>{t("settings.advanced")}</span>
         <ChevronDown size={17} aria-hidden="true" />
       </button>
 
       {advancedOpen && (
         <div className="advanced-controls">
           <RangeField
-            label="Corner threshold"
+            label={t("settings.cornerThreshold")}
             value={settings.cornerThreshold}
             min={0}
             max={120}
@@ -169,7 +172,7 @@ export function SettingsPanel({
             onChange={(value) => update("cornerThreshold", value)}
           />
           <RangeField
-            label="Curve simplify"
+            label={t("settings.curveSimplify")}
             value={settings.simplify}
             min={0}
             max={3}
@@ -180,21 +183,27 @@ export function SettingsPanel({
           />
           <div className="select-grid">
             <label>
-              <span>Max dimension</span>
+              <span>{t("settings.maxDimension")}</span>
               <select
                 value={settings.maxDimension}
                 onChange={(event) =>
                   update("maxDimension", Number(event.target.value))
                 }
               >
-                <option value={800}>800 px · Fast</option>
-                <option value={1200}>1200 px · Balanced</option>
-                <option value={1600}>1600 px · Detailed</option>
-                <option value={2200}>2200 px · Maximum</option>
+                <option value={800}>{t("settings.dimensions.fast")}</option>
+                <option value={1200}>
+                  {t("settings.dimensions.balanced")}
+                </option>
+                <option value={1600}>
+                  {t("settings.dimensions.detailed")}
+                </option>
+                <option value={2200}>
+                  {t("settings.dimensions.maximum")}
+                </option>
               </select>
             </label>
             <label>
-              <span>SVG optimization</span>
+              <span>{t("settings.optimization")}</span>
               <select
                 value={settings.optimize}
                 onChange={(event) =>
@@ -204,17 +213,23 @@ export function SettingsPanel({
                   )
                 }
               >
-                <option value={0}>Off</option>
-                <option value={1}>Standard</option>
-                <option value={2}>Maximum</option>
+                <option value={0}>
+                  {t("settings.optimizationOptions.off")}
+                </option>
+                <option value={1}>
+                  {t("settings.optimizationOptions.standard")}
+                </option>
+                <option value={2}>
+                  {t("settings.optimizationOptions.maximum")}
+                </option>
               </select>
             </label>
           </div>
           {settings.clustering === "binary" && (
             <label className="switch-row">
               <span>
-                <strong>Adaptive threshold</strong>
-                <small>Best for scans with uneven lighting</small>
+                <strong>{t("settings.adaptiveThreshold")}</strong>
+                <small>{t("settings.adaptiveThresholdHint")}</small>
               </span>
               <input
                 type="checkbox"
@@ -251,9 +266,9 @@ export function SettingsPanel({
               <span>
                 {hasResult
                   ? isDirty
-                    ? "Apply new settings"
-                    : "Convert again"
-                  : "Convert to SVG"}
+                    ? t("settings.applySettings")
+                    : t("settings.convertAgain")
+                  : t("settings.convert")}
               </span>
             </>
           )}
@@ -266,14 +281,12 @@ export function SettingsPanel({
         {isConverting && (
           <button className="cancel-button" type="button" onClick={onCancel}>
             <X size={15} aria-hidden="true" />
-            Stop
+            {t("settings.stop")}
           </button>
         )}
       </div>
 
-      <p className="privacy-note">
-        Your image stays in this tab and is never uploaded.
-      </p>
+      <p className="privacy-note">{t("settings.privacy")}</p>
     </aside>
   );
 }

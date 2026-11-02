@@ -1,4 +1,5 @@
 import { ImageIcon, SplitSquareHorizontal } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export type PreviewMode = "compare" | "source" | "vector";
 
@@ -21,15 +22,17 @@ export function ComparisonViewer({
   onSplitChange,
   onModeChange,
 }: ComparisonViewerProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="comparison-viewer">
-      <div className="preview-tabs" aria-label="Preview mode">
+      <div className="preview-tabs" aria-label={t("preview.mode")}>
         <button
           type="button"
           className={mode === "source" ? "is-active" : ""}
           onClick={() => onModeChange("source")}
         >
-          Source
+          {t("preview.source")}
         </button>
         <button
           type="button"
@@ -37,14 +40,14 @@ export function ComparisonViewer({
           onClick={() => onModeChange("compare")}
         >
           <SplitSquareHorizontal size={14} aria-hidden="true" />
-          Compare
+          {t("preview.compare")}
         </button>
         <button
           type="button"
           className={mode === "vector" ? "is-active" : ""}
           onClick={() => onModeChange("vector")}
         >
-          SVG
+          {t("preview.svg")}
         </button>
       </div>
 
@@ -55,7 +58,11 @@ export function ComparisonViewer({
 
         {mode === "vector" && (
           <div className="vector-full">
-            <img src={svgUrl} alt="Generated SVG preview" draggable={false} />
+            <img
+              src={svgUrl}
+              alt={t("converter.svgPreviewAlt")}
+              draggable={false}
+            />
           </div>
         )}
 
@@ -74,7 +81,7 @@ export function ComparisonViewer({
               <img
                 className="compare-image"
                 src={svgUrl}
-                alt="Generated SVG"
+                alt={t("converter.svgAlt")}
                 draggable={false}
               />
             </div>
@@ -87,15 +94,19 @@ export function ComparisonViewer({
                 <ImageIcon size={14} />
               </span>
             </div>
-            <span className="compare-label label-source">Source</span>
-            <span className="compare-label label-vector">SVG</span>
+            <span className="compare-label label-source">
+              {t("preview.source")}
+            </span>
+            <span className="compare-label label-vector">
+              {t("preview.svg")}
+            </span>
             <input
               className="compare-range"
               type="range"
               min={0}
               max={100}
               value={split}
-              aria-label="Compare the source image and SVG"
+              aria-label={t("preview.compareRange")}
               onChange={(event) => onSplitChange(Number(event.target.value))}
             />
           </>

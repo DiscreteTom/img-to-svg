@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "svg-to-png | Raster to Vector",
+    "description": "Convert PNG, JPG, and WebP images into crisp, scalable SVG files directly in your browser with VTracer WebAssembly."
+  },
+  "app": {
+    "homeLabel": "svg-to-png home"
+  },
+  "language": {
+    "label": "Language",
+    "english": "EN",
+    "chinese": "中文",
+    "switchToEnglish": "Switch to English",
+    "switchToChinese": "切换到中文"
+  },
+  "topbar": {
+    "localProcessing": "Local processing"
+  },
+  "converter": {
+    "section": "01 / CONVERT",
+    "heading": "Start vectorizing",
+    "engine": "visioncortex VTracer",
+    "fileInput": "Choose an image",
+    "dropTitle": "Drop an image here",
+    "dropDescription": "PNG, JPG, or WebP up to 25 MB",
+    "chooseImage": "Choose image",
+    "trySample": "or try a sample",
+    "replaceImage": "Replace image",
+    "sourceImageAlt": "Source image {{name}}",
+    "selectedImageAlt": "Selected image {{name}}",
+    "svgPreviewAlt": "Generated SVG preview",
+    "svgAlt": "Generated SVG",
+    "emptyHint": "Choose a style on the right, then convert",
+    "dirtyHint": "Settings changed. Convert again to update the preview and file.",
+    "localMemory": "Images stay in local memory",
+    "clearWorkspace": "Clear workspace",
+    "copySvg": "Copy SVG",
+    "copied": "Copied",
+    "downloadSvg": "Download SVG"
+  },
+  "stats": {
+    "svgSize": "SVG size",
+    "vectorPaths": "Vector paths",
+    "scalable": "Scalable"
+  },
+  "preview": {
+    "mode": "Preview mode",
+    "source": "Source",
+    "compare": "Compare",
+    "svg": "SVG",
+    "compareRange": "Compare the source image and SVG"
+  },
+  "progress": {
+    "segment": "Finding color regions",
+    "compose": "Drawing vector shapes",
+    "optimize": "Optimizing SVG paths"
+  },
+  "notices": {
+    "svgGenerated": "SVG generated",
+    "conversionStopped": "Conversion stopped",
+    "svgCopied": "SVG code copied",
+    "downloadStarted": "SVG download started"
+  },
+  "errors": {
+    "unsupportedFile": "Choose a PNG, JPG, or WebP image.",
+    "fileTooLarge": "This image is over 25 MB. Compress it and try again.",
+    "imageLoad": "The image could not be loaded.",
+    "imageRead": "This image could not be read.",
+    "sampleLoad": "The sample image could not be loaded.",
+    "sampleCreate": "This browser cannot create the sample image.",
+    "sampleGenerate": "The sample image could not be generated.",
+    "conversionFailed": "Conversion failed: {{message}}",
+    "conversionRetry": "Conversion failed. Please try again.",
+    "copyFailed": "Copy failed. Please try again.",
+    "clipboardUnavailable": "Clipboard access is unavailable in this browser.",
+    "vectorizerReloaded": "The vectorizer was reloaded."
+  },
+  "settings": {
+    "aria": "Conversion settings",
+    "title": "Vector style",
+    "presetsAria": "Style presets",
+    "geometry": "Geometry",
+    "geometryHint": "Controls the outline treatment",
+    "geometryMode": "Geometry mode",
+    "geometryOptions": {
+      "pixel": "Pixel",
+      "polygon": "Polygon",
+      "spline": "Spline"
+    },
+    "colorCount": "Color count",
+    "speckleFilter": "Speckle filter",
+    "advanced": "Advanced controls",
+    "cornerThreshold": "Corner threshold",
+    "curveSimplify": "Curve simplify",
+    "maxDimension": "Max dimension",
+    "dimensions": {
+      "fast": "800 px · Fast",
+      "balanced": "1200 px · Balanced",
+      "detailed": "1600 px · Detailed",
+      "maximum": "2200 px · Maximum"
+    },
+    "optimization": "SVG optimization",
+    "optimizationOptions": {
+      "off": "Off",
+      "standard": "Standard",
+      "maximum": "Maximum"
+    },
+    "adaptiveThreshold": "Adaptive threshold",
+    "adaptiveThresholdHint": "Best for scans with uneven lighting",
+    "applySettings": "Apply new settings",
+    "convertAgain": "Convert again",
+    "convert": "Convert to SVG",
+    "stop": "Stop",
+    "privacy": "Your image stays in this tab and is never uploaded."
+  },
+  "presets": {
+    "artwork": {
+      "label": "Artwork & icons",
+      "description": "Crisp color blocks, smooth curves"
+    },
+    "photo": {
+      "label": "Photos & gradients",
+      "description": "Preserve richer color detail"
+    },
+    "lines": {
+      "label": "Line art & logos",
+      "description": "High contrast, clean edges"
+    }
+  }
+}

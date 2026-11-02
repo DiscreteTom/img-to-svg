@@ -19,6 +19,7 @@ import {
   type ChangeEvent,
   type DragEvent,
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ComparisonViewer,
   type PreviewMode,
@@ -44,13 +45,13 @@ import {
 
 type ProgressPhase = "segment" | "compose" | "optimize";
 
-const PHASE_LABELS: Record<ProgressPhase, string> = {
-  segment: "Finding color regions",
-  compose: "Drawing vector shapes",
-  optimize: "Optimizing SVG paths",
-};
+interface UiMessage {
+  key: string;
+  values?: Record<string, string>;
+}
 
 function App() {
+  const { t, i18n } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const activeJobRef = useRef(0);
   const noticeTimerRef = useRef<number | null>(null);
@@ -63,7 +64,7 @@ function App() {
   const [isConverting, setIsConverting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<ProgressPhase>("segment");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<UiMessage | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [previewMode, setPreviewMode] = useState<PreviewMode>("compare");
   const [split, setSplit] = useState(52);
@@ -78,6 +79,14 @@ function App() {
     () => (svg.match(/<path\b/gi) ?? []).length,
     [svg],
   );
+
+  useEffect(() => {
+    document.title = t("meta.title");
+    document.querySelector('meta[name="description"]')?.setAttribute(
+      "content",
+      t("meta.description"),
+    );
+  }, [i18n.resolvedLanguage, t]);
 
   useEffect(() => {
     return () => {
@@ -107,16 +116,16 @@ function App() {
   }, [svg]);
 
   async function acceptFile(file: File): Promise<void> {
-    setError("");
+    setError(null);
     setNotice("");
 
     if (!isSupportedImage(file)) {
-      setError("Choose a PNG, JPG, or WebP image.");
+      setError({ key: "errors.unsupportedFile" });
       return;
     }
 
     if (file.size > MAX_FILE_BYTES) {
-      setError("This image is over 25 MB. Compress it and try again.");
+      setError({ key: "errors.fileTooLarge" });
       return;
     }
 
@@ -134,11 +143,13 @@ function App() {
       setProgress(0);
       setResultSettingsKey("");
     } catch (fileError) {
-      setError(
-        fileError instanceof Error
-          ? fileError.message
-          : "The image could not be loaded.",
-      );
+      setError({
+        key: "errors.imageLoad",
+        values:
+          fileError instanceof Error
+            ? { message: fileError.message }
+            : undefined,
+      });
     }
   }
 
@@ -157,15 +168,17 @@ function App() {
 
   async function handleSample() {
     setLoadingSample(true);
-    setError("");
+    setError(null);
     try {
       await acceptFile(await createSampleImage());
     } catch (sampleError) {
-      setError(
-        sampleError instanceof Error
-          ? sampleError.message
-          : "The sample image could not be loaded.",
-      );
+      setError({
+        key: "errors.sampleLoad",
+        values:
+          sampleError instanceof Error
+            ? { message: sampleError.message }
+            : undefined,
+      });
     } finally {
       setLoadingSample(false);
     }
@@ -176,7 +189,7 @@ function App() {
 
     const settingsSnapshot = { ...settings };
     const generation = ++activeJobRef.current;
-    setError("");
+    setError(null);
     setNotice("");
     setIsConverting(true);
     setProgress(2);
@@ -202,14 +215,17 @@ function App() {
       setResultSettingsKey(JSON.stringify(settingsSnapshot));
       setProgress(100);
       setPhase("optimize");
-      showNotice("SVG generated");
+      showNotice("notices.svgGenerated");
     } catch (conversionError) {
       if (generation !== activeJobRef.current) return;
       disposeVectorizer();
       setError(
         conversionError instanceof Error
-          ? `Conversion failed: ${conversionError.message}`
-          : "Conversion failed. Please try again.",
+          ? {
+              key: "errors.conversionFailed",
+              values: { message: conversionError.message },
+            }
+          : { key: "errors.conversionRetry" },
       );
     } finally {
       if (generation === activeJobRef.current) setIsConverting(false);
@@ -221,28 +237,24 @@ function App() {
     disposeVectorizer();
     setIsConverting(false);
     setProgress(0);
-    showNotice("Conversion stopped");
+    showNotice("notices.conversionStopped");
   }
 
   async function handleCopy() {
     try {
       await copyText(svg);
       setCopied(true);
-      showNotice("SVG code copied");
+      showNotice("notices.svgCopied");
       window.setTimeout(() => setCopied(false), 1800);
     } catch (copyError) {
-      setError(
-        copyError instanceof Error
-          ? copyError.message
-          : "Copy failed. Please try again.",
-      );
+      setError({ key: "errors.copyFailed" });
     }
   }
 
   function handleDownload() {
     if (!source || !svg) return;
     downloadSvg(svg, `${filenameStem(source.file.name)}-vector.svg`);
-    showNotice("SVG download started");
+    showNotice("notices.downloadStarted");
   }
 
   function resetWorkspace() {
@@ -250,26 +262,27 @@ function App() {
     disposeVectorizer();
     setSource(null);
     setSvg("");
-    setError("");
+    setError(null);
     setNotice("");
     setIsConverting(false);
     setProgress(0);
   }
 
-  function showNotice(message: string) {
-    setNotice(message);
+  function showNotice(key: string) {
+    setNotice(key);
     if (noticeTimerRef.current) window.clearTimeout(noticeTimerRef.current);
     noticeTimerRef.current = window.setTimeout(() => setNotice(""), 2600);
   }
 
-  const progressLabel = PHASE_LABELS[phase];
+  const progressLabel = t(`progress.${phase}`);
+  const activeLanguage = i18n.resolvedLanguage ?? i18n.language;
 
   return (
     <div className="site-shell">
       <div className="ambient-grid" aria-hidden="true" />
 
       <header className="topbar">
-        <a className="brand" href="#" aria-label="svg-to-png home">
+        <a className="brand" href="#" aria-label={t("app.homeLabel")}>
           <span className="brand-mark" aria-hidden="true">
             <i />
             <i />
@@ -280,8 +293,31 @@ function App() {
         <div className="topbar-meta">
           <span className="local-chip">
             <LockKeyhole size={13} aria-hidden="true" />
-            Local processing
+            {t("topbar.localProcessing")}
           </span>
+          <div className="language-switch" aria-label={t("language.label")}>
+            <button
+              type="button"
+              className={activeLanguage === "en" ? "is-active" : ""}
+              aria-pressed={activeLanguage === "en"}
+              title={t("language.switchToEnglish")}
+              data-language="en"
+              onClick={() => void i18n.changeLanguage("en")}
+            >
+              {t("language.english")}
+            </button>
+            <span aria-hidden="true" />
+            <button
+              type="button"
+              className={activeLanguage === "zh-CN" ? "is-active" : ""}
+              aria-pressed={activeLanguage === "zh-CN"}
+              title={t("language.switchToChinese")}
+              data-language="zh-CN"
+              onClick={() => void i18n.changeLanguage("zh-CN")}
+            >
+              {t("language.chinese")}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -289,12 +325,12 @@ function App() {
         <section className="converter-card" id="converter">
           <div className="converter-heading">
             <div>
-              <span className="section-number">01 / CONVERT</span>
-              <h2>Start vectorizing</h2>
+              <span className="section-number">{t("converter.section")}</span>
+              <h2>{t("converter.heading")}</h2>
             </div>
             <span className="engine-badge">
               <Sparkles size={14} aria-hidden="true" />
-              visioncortex VTracer
+              {t("converter.engine")}
             </span>
           </div>
 
@@ -305,6 +341,7 @@ function App() {
                 className="visually-hidden"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
+                aria-label={t("converter.fileInput")}
                 onChange={handleFileInput}
               />
 
@@ -324,8 +361,8 @@ function App() {
                     <ImageIcon size={32} strokeWidth={1.4} />
                   </span>
                   <div>
-                    <h3>Drop an image here</h3>
-                    <p>PNG, JPG, or WebP up to 25 MB</p>
+                    <h3>{t("converter.dropTitle")}</h3>
+                    <p>{t("converter.dropDescription")}</p>
                   </div>
                   <div className="dropzone-actions">
                     <button
@@ -334,7 +371,7 @@ function App() {
                       onClick={() => fileInputRef.current?.click()}
                     >
                       <Upload size={16} aria-hidden="true" />
-                      Choose image
+                      {t("converter.chooseImage")}
                     </button>
                     <button
                       className="text-button"
@@ -345,7 +382,7 @@ function App() {
                       {loadingSample ? (
                         <LoaderCircle className="spin" size={14} />
                       ) : null}
-                      or try a sample
+                      {t("converter.trySample")}
                     </button>
                   </div>
                   <div className="dropzone-formats">
@@ -376,14 +413,16 @@ function App() {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                     >
-                      Replace image
+                      {t("converter.replaceImage")}
                     </button>
                   </div>
 
                   {svg && svgUrl ? (
                     <ComparisonViewer
                       sourceUrl={source.url}
-                      sourceAlt={`Source image ${source.file.name}`}
+                      sourceAlt={t("converter.sourceImageAlt", {
+                        name: source.file.name,
+                      })}
                       svgUrl={svgUrl}
                       split={split}
                       mode={previewMode}
@@ -394,7 +433,9 @@ function App() {
                     <div className="source-preview">
                       <img
                         src={source.url}
-                        alt={`Selected image ${source.file.name}`}
+                        alt={t("converter.selectedImageAlt", {
+                          name: source.file.name,
+                        })}
                         draggable={false}
                       />
                       {isConverting && (
@@ -421,15 +462,15 @@ function App() {
                       <div className="result-stats">
                         <span>
                           <strong>{formatBytes(new Blob([svg]).size)}</strong>
-                          SVG size
+                          {t("stats.svgSize")}
                         </span>
                         <span>
                           <strong>{svgPathCount}</strong>
-                          Vector paths
+                          {t("stats.vectorPaths")}
                         </span>
                         <span>
                           <strong>100%</strong>
-                          Scalable
+                          {t("stats.scalable")}
                         </span>
                       </div>
                       <div className="result-actions">
@@ -442,7 +483,9 @@ function App() {
                           ) : (
                             <Copy size={16} aria-hidden="true" />
                           )}
-                          {copied ? "Copied" : "Copy SVG"}
+                          {copied
+                            ? t("converter.copied")
+                            : t("converter.copySvg")}
                         </button>
                         <button
                           className="download-button"
@@ -450,7 +493,7 @@ function App() {
                           onClick={handleDownload}
                         >
                           <Download size={16} aria-hidden="true" />
-                          Download SVG
+                          {t("converter.downloadSvg")}
                         </button>
                       </div>
                     </div>
@@ -461,7 +504,7 @@ function App() {
                       <span>
                         <ArrowDown size={14} aria-hidden="true" />
                       </span>
-                      Choose a style on the right, then convert
+                      {t("converter.emptyHint")}
                     </div>
                   )}
                 </div>
@@ -470,13 +513,13 @@ function App() {
               {error && (
                 <div className="error-banner" role="alert">
                   <span>!</span>
-                  {error}
+                  {t(error.key, error.values)}
                 </div>
               )}
 
               {isDirty && !isConverting && (
                 <div className="dirty-note">
-                  Settings changed. Convert again to update the preview and file.
+                  {t("converter.dirtyHint")}
                 </div>
               )}
             </div>
@@ -498,11 +541,11 @@ function App() {
           <div className="converter-footer">
             <span>
               <LockKeyhole size={13} aria-hidden="true" />
-              Images stay in local memory
+              {t("converter.localMemory")}
             </span>
             <button type="button" onClick={resetWorkspace}>
               <RotateCcw size={13} aria-hidden="true" />
-              Clear workspace
+              {t("converter.clearWorkspace")}
             </button>
           </div>
         </section>
@@ -514,7 +557,7 @@ function App() {
         aria-live="polite"
       >
         <Check size={15} aria-hidden="true" />
-        {notice}
+        {notice ? t(notice) : ""}
       </div>
     </div>
   );

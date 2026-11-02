@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 function drawSample(ctx: CanvasRenderingContext2D): void {
   const width = 1200;
   const height = 820;
@@ -73,14 +75,14 @@ export function createSampleImage(): Promise<File> {
     const context = canvas.getContext("2d");
 
     if (!context) {
-      reject(new Error("This browser cannot create the sample image."));
+      reject(new Error(i18n.t("errors.sampleCreate")));
       return;
     }
 
     drawSample(context);
     canvas.toBlob((blob) => {
       if (!blob) {
-        reject(new Error("The sample image could not be generated."));
+        reject(new Error(i18n.t("errors.sampleGenerate")));
         return;
       }
       resolve(

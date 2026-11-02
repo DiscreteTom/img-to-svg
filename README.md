@@ -18,6 +18,12 @@ npm run preview
 
 The `predev` and `prebuild` scripts copy the browser worker and WASM files from `vtracer-browser` into `public/vtracer`.
 
+## Internationalization
+
+The interface supports English and Simplified Chinese. It follows the browser language on first visit, and the language switcher stores the user's choice in local storage.
+
+Translation resources live in `src/locales`. Add new interface strings to both locale files so every language stays complete.
+
 ## GitHub Pages
 
 After pushing the repository to GitHub:

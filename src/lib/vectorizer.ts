@@ -1,4 +1,5 @@
 import type { ConvertOptions, VTracer } from "vtracer-browser";
+import i18n from "../i18n";
 
 type VTracerModule = {
   createVTracer: () => VTracer;
@@ -22,7 +23,7 @@ async function loadTracer(): Promise<VTracer> {
       const tracer = module.createVTracer();
       if (version !== loadVersion) {
         tracer.terminate();
-        throw new Error("The vectorizer was reloaded.");
+        throw new Error(i18n.t("errors.vectorizerReloaded"));
       }
       activeTracer = tracer;
       return tracer;

@@ -25,16 +25,12 @@ export type PresetId = "artwork" | "photo" | "lines";
 
 export interface PresetDefinition {
   id: PresetId;
-  label: string;
-  description: string;
   settings: TraceSettings;
 }
 
 export const PRESETS: PresetDefinition[] = [
   {
     id: "artwork",
-    label: "Artwork & icons",
-    description: "Crisp color blocks, smooth curves",
     settings: {
       preset: "poster",
       clustering: "color-cluster",
@@ -52,8 +48,6 @@ export const PRESETS: PresetDefinition[] = [
   },
   {
     id: "photo",
-    label: "Photos & gradients",
-    description: "Preserve richer color detail",
     settings: {
       preset: "photo",
       clustering: "color-cluster",
@@ -71,8 +65,6 @@ export const PRESETS: PresetDefinition[] = [
   },
   {
     id: "lines",
-    label: "Line art & logos",
-    description: "High contrast, clean edges",
     settings: {
       preset: "bw",
       clustering: "binary",

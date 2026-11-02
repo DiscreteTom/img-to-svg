@@ -1,3 +1,5 @@
+import i18n from "../i18n";
+
 export const MAX_FILE_BYTES = 25 * 1024 * 1024;
 
 const SUPPORTED_EXTENSIONS = /\.(png|jpe?g|webp)$/i;
@@ -43,7 +45,7 @@ function getImageDimensions(
     const image = new Image();
     image.onload = () =>
       resolve({ width: image.naturalWidth, height: image.naturalHeight });
-    image.onerror = () => reject(new Error("This image could not be read."));
+    image.onerror = () => reject(new Error(i18n.t("errors.imageRead")));
     image.src = url;
   });
 }
@@ -73,7 +75,7 @@ export async function copyText(text: string): Promise<void> {
   const copied = document.execCommand("copy");
   textarea.remove();
 
-  if (!copied) throw new Error("Clipboard access is unavailable in this browser.");
+  if (!copied) throw new Error(i18n.t("errors.clipboardUnavailable"));
 }
 
 export function filenameStem(filename: string): string {
