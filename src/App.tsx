@@ -1,18 +1,13 @@
 import {
   ArrowDown,
-  ArrowRight,
   Check,
-  Code2,
   Copy,
   Download,
   FileImage,
-  Gauge,
   ImageIcon,
   LoaderCircle,
   LockKeyhole,
-  Maximize2,
   RotateCcw,
-  ShieldCheck,
   Sparkles,
   Upload,
 } from "lucide-react";
@@ -287,80 +282,10 @@ function App() {
             <LockKeyhole size={13} aria-hidden="true" />
             Local processing
           </span>
-          <a href="#how-it-works">How it works</a>
         </div>
       </header>
 
-      <main>
-        <section className="hero">
-          <div className="hero-copy">
-            <div className="eyebrow">
-              <span>RASTER</span>
-              <ArrowRight size={13} aria-hidden="true" />
-              <span>VECTOR</span>
-            </div>
-            <h1>
-              Turn pixels into
-              <br />
-              <em>infinitely scalable</em> SVG.
-            </h1>
-            <p className="hero-description">
-              Redraw icons, logos, and photos as clean, lightweight vector paths
-              with VTracer. No sign-up. No uploads.
-            </p>
-            <div className="hero-proof">
-              <span>
-                <ShieldCheck size={16} aria-hidden="true" />
-                Zero uploads
-              </span>
-              <span>
-                <Gauge size={16} aria-hidden="true" />
-                Web Worker
-              </span>
-              <span>
-                <Maximize2 size={16} aria-hidden="true" />
-                Lossless scaling
-              </span>
-            </div>
-          </div>
-
-          <div className="hero-art" aria-hidden="true">
-            <div className="art-card art-card-pixels">
-              <span className="art-label">PIXELS · 24 × 24</span>
-              <div className="pixel-field">
-                {Array.from({ length: 36 }, (_, index) => (
-                  <span
-                    key={index}
-                    className={`pixel p${(index * 7 + 3) % 9}`}
-                  />
-                ))}
-              </div>
-            </div>
-            <svg viewBox="0 0 470 360" role="presentation">
-              <path
-                className="art-sun"
-                d="M92 268c8-86 55-149 139-184 24 91-22 156-139 184Z"
-              />
-              <path
-                className="art-ink"
-                d="M314 301c-56-51-80-114-48-188 54 31 78 93 48 188Z"
-              />
-              <path
-                className="art-stroke"
-                d="M64 286c91-21 161-71 212-148 32-49 72-79 123-91"
-              />
-              <circle className="art-ring" cx="350" cy="102" r="50" />
-              <circle className="art-dot" cx="350" cy="102" r="17" />
-            </svg>
-            <div className="art-card art-card-vector">
-              <span className="art-label">SVG · ∞</span>
-              <Code2 size={25} strokeWidth={1.4} />
-            </div>
-            <span className="floating-note note-one">Bézier curves</span>
-            <span className="floating-note note-two">Color clustering</span>
-          </div>
-        </section>
-
+      <main className="simple-main">
         <section className="converter-card" id="converter">
           <div className="converter-heading">
             <div>
@@ -581,56 +506,7 @@ function App() {
             </button>
           </div>
         </section>
-
-        <section className="how-it-works" id="how-it-works">
-          <div className="section-intro">
-            <span className="section-number">02 / HOW IT WORKS</span>
-            <h2>Three steps. One essential vector.</h2>
-          </div>
-          <div className="steps-grid">
-            <article>
-              <span className="step-index">01</span>
-              <ImageIcon size={24} strokeWidth={1.5} aria-hidden="true" />
-              <h3>Read pixels</h3>
-              <p>
-                Analyze color, edges, and transparency to identify regions that
-                can be drawn independently.
-              </p>
-            </article>
-            <article>
-              <span className="step-index">02</span>
-              <Sparkles size={24} strokeWidth={1.5} aria-hidden="true" />
-              <h3>Fit the curves</h3>
-              <p>
-                VTracer turns region boundaries into polygons or Bézier curves
-                while filtering out visual noise.
-              </p>
-            </article>
-            <article>
-              <span className="step-index">03</span>
-              <Download size={24} strokeWidth={1.5} aria-hidden="true" />
-              <h3>Export SVG</h3>
-              <p>
-                Get an SVG that scales cleanly across web, print, icon, and
-                design workflows.
-              </p>
-            </article>
-          </div>
-        </section>
       </main>
-
-      <footer className="site-footer">
-        <div className="footer-brand">
-          <span className="brand-mark" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>svg-to-png</span>
-        </div>
-        <p>Pixels in. Vectors out. Processed locally.</p>
-        <span className="footer-engine">Powered by VTracer WASM</span>
-      </footer>
 
       <div
         className={`toast${notice ? " is-visible" : ""}`}

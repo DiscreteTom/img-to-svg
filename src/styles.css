@@ -175,6 +175,10 @@ main {
   margin: 0 auto;
 }
 
+.simple-main {
+  padding: 70px 0 110px;
+}
+
 .hero {
   min-height: 520px;
   display: grid;
@@ -415,7 +419,7 @@ main {
   background: var(--surface);
   box-shadow: var(--shadow);
   scroll-margin-top: 24px;
-  animation: reveal 850ms 250ms ease-out both;
+  animation: reveal 700ms 80ms ease-out both;
 }
 
 .converter-heading {
@@ -1731,6 +1735,10 @@ main {
 }
 
 @media (max-width: 1020px) {
+  .simple-main {
+    padding-top: 54px;
+  }
+
   .hero {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -1793,6 +1801,10 @@ main {
 
   .topbar-meta a {
     display: none;
+  }
+
+  .simple-main {
+    padding: 38px 0 72px;
   }
 
   .topbar-meta {
