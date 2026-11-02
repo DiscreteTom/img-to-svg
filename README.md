@@ -1,4 +1,4 @@
-# svg-to-png
+# img-to-svg
 
 A browser-based PNG, JPG, and WebP to SVG converter. Images never leave the device; vectorization runs inside a Web Worker using VTracer WebAssembly.
 

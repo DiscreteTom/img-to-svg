@@ -1,10 +1,10 @@
 {
   "meta": {
-    "title": "svg-to-png | 位图转矢量",
+    "title": "img-to-svg | 位图转矢量",
     "description": "使用 VTracer WebAssembly 在浏览器中将 PNG、JPG 和 WebP 图片转换为清晰、可缩放的 SVG。"
   },
   "app": {
-    "homeLabel": "svg-to-png 首页"
+    "homeLabel": "img-to-svg 首页"
   },
   "language": {
     "label": "语言",

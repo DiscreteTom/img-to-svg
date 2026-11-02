@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next";
 import en from "./locales/en.json";
 import zhCN from "./locales/zh-CN.json";
 
-const STORAGE_KEY = "svg-to-png-language";
+const STORAGE_KEY = "img-to-svg-language";
 
 function normalizeLanguage(language: string): "en" | "zh-CN" {
   return language.toLowerCase().startsWith("zh") ? "zh-CN" : "en";

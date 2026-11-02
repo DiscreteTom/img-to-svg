@@ -288,7 +288,7 @@ function App() {
             <i />
             <i />
           </span>
-          <span>svg-to-png</span>
+          <span>img-to-svg</span>
         </a>
         <div className="topbar-meta">
           <span className="local-chip">

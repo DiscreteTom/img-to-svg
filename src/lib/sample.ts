@@ -86,7 +86,7 @@ export function createSampleImage(): Promise<File> {
         return;
       }
       resolve(
-        new File([blob], "svg-to-png-sample.png", {
+        new File([blob], "img-to-svg-sample.png", {
           type: "image/png",
         }),
       );
